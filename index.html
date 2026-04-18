@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Presentation</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 0 16px;
+      background: #111;
+      color: #fff;
+      text-align: center;
+    }
+    video {
+      width: 100%;
+      border-radius: 12px;
+      background: #000;
+    }
+    #message {
+      margin-top: 15px;
+      font-size: 14px;
+      color: #ccc;
+    }
+  </style>
+</head>
+<body>
+  <h2>Presentation</h2>
+
+  <video id="player" controls playsinline>
+    <source src="https://drive.google.com/uc?export=download&id=1ZcwW9ItVslJvnNN9kPa8QJ2bcjRBMPo-" type="video/webm">
+  </video>
+
+  <div id="message"></div>
+
+  <script>
+    const player = document.getElementById("player");
+    const message = document.getElementById("message");
+
+    const playlist = [
+      "https://drive.google.com/uc?export=download&id=1ZcwW9ItVslJvnNN9kPa8QJ2bcjRBMPo-",
+      "https://drive.google.com/uc?export=download&id=1gGr5gvyyrbYWj1H0IrDgRZx_s3E5DKKB"
+    ];
+
+    let index = 0;
+    let savedRate = 1;
+
+    player.addEventListener("ratechange", () => {
+      savedRate = player.playbackRate;
+    });
+
+    player.addEventListener("ended", () => {
+      index++;
+      if (index < playlist.length) {
+        message.textContent = "Starting next part...";
+        setTimeout(() => {
+          player.src = playlist[index];
+          player.load();
+          player.playbackRate = savedRate;
+          player.play().catch(() => {});
+          message.textContent = "";
+        }, 1000);
+      } else {
+        message.textContent = "Presentation finished.";
+      }
+    });
+  </script>
+</body>
+</html>
